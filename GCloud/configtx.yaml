@@ -1,0 +1,99 @@
+---
+Organizations:
+
+    - &OrdererOrg
+        Name: OrdererOrg
+        ID: OrdererMSP
+        MSPDir: crypto-config/ordererOrganizations/mavchain.com/msp
+
+    - &HP1
+        Name: HP1MSP
+        ID: HP1MSP
+        MSPDir: crypto-config/peerOrganizations/hp1.mavchain.com/msp
+        AnchorPeers:
+            - Host: peer0.hp1.mavchain.com
+              Port: 7051
+
+    - &HP2
+        Name: HP2MSP
+        ID: HP2MSP
+        MSPDir: crypto-config/peerOrganizations/hp2.mavchain.com/msp
+        AnchorPeers:
+            - Host: peer0.hp2.mavchain.com
+              Port: 7051
+
+    - &Provider1
+        Name: Provider1MSP
+        ID: Provider1MSP
+        MSPDir: crypto-config/peerOrganizations/provider1.mavchain.com/msp
+        AnchorPeers:
+            - Host: peer0.provider1.mavchain.com
+              Port: 7051
+
+Orderer: &OrdererDefaults
+    OrdererType: solo
+    Addresses:
+        - orderer.mavchain.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+    Organizations:
+
+Application: &ApplicationDefaults
+    Organizations:
+
+Capabilities:
+    Global: &ChannelCapabilities
+        V1_1: true
+
+    Orderer: &OrdererCapabilities
+        V1_1: true
+
+    Application: &ApplicationCapabilities
+        V1_1: true
+
+Profiles:
+    OrdererGenesis:
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *HP1
+                    - *HP2
+                    - *Provider1
+    
+    ChannelAll:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *HP1
+                - *HP2
+                - *Provider1
+
+            Capabilities:
+                <<: *ApplicationCapabilities
+    
+    ChannelHP:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *HP1
+                - *HP2
+                
+            Capabilities:
+                <<: *ApplicationCapabilities

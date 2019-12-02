@@ -1,0 +1,27 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: mavchain.com
+    Specs:
+      - Hostname: orderer
+PeerOrgs:
+  - Name: HP1
+    Domain: hp1.mavchain.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+  - Name: HP2
+    Domain: hp2.mavchain.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+  - Name: Provider1
+    Domain: provider1.mavchain.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
