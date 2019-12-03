@@ -1,3 +1,4 @@
+cd ~/mavtestfabric13/fabric-samples/multi-channel-network
 echo COMPOSE_PROJECT_NAME=net > .env
 ../bin/cryptogen generate --config=./crypto-config.yaml
 mkdir channel-artifacts
